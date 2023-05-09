@@ -1,0 +1,67 @@
+.loader
+{
+  background: rgba( 255, 255, 255, 0.8 );
+  display: none;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+.loader img
+{
+  left: 50%;
+  margin-left: -32px;
+  margin-top: -32px;
+  position: absolute;
+  top: 50%;
+}
+
+.bg-image{
+  position: relative;
+}
+
+.title{
+  position: absolute;
+  color: white;
+  top: 70%;
+  left: 10%;
+  text-shadow: 2px 2px black;
+  font-family: "Brush Script MT", Lucida Handwriting;
+  font-size: 5vw;
+
+}
+
+/* rating */
+.rating-css div {
+  color: #ffe400;
+  font-size: 10px;
+  font-family: sans-serif;
+  font-weight: 200;
+  text-align: left;
+  text-transform: uppercase;
+  padding: 20px 0;
+}
+.rating-css input {
+  display: none;
+}
+.rating-css input + label {
+  font-size: 20px;
+  text-shadow: 1px 1px 0 #8f8420;
+  cursor: pointer;
+}
+.rating-css input:checked + label ~ label {
+  color: #b4afaf;
+}
+.rating-css label:active {
+  transform: scale(0.8);
+  transition: 0.3s ease;
+}
+
+.checked{
+  color: #ffe400;
+  margin-top: 1%;
+} 
+.not-checked{
+  margin-top: 1%;
+}

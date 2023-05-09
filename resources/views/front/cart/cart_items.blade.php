@@ -1,0 +1,144 @@
+<?php use App\Models\Product ; ?>
+<!-- Products-List-Wrapper -->
+@if (count($getCartItem) > 0)
+<div class="table-wrapper u-s-m-b-60">
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                $total_price = 0;
+            @endphp
+            @foreach ($getCartItem as $item)
+            <?php $getDiscountAttributePrice = Product::getDiscountAttributePrice($item['product_id'],$item['size']);
+            ?>
+            <tr>
+                <td>
+                    <div class="cart-anchor-image">
+                        <a href="{{ url('product/'.$item['product_id']) }}">
+                            <img src="{{ asset('assets/admin/images/'.$item['product']['product_image']) }}" alt="Product">
+                            <h6>{{ $item['product']['product_name'] }} ({{ $item['product']['product_code'] }})
+                                -  Size :{{ $item['size'] }}<br>
+                                Color: {{ $item['product']['product_color'] }}
+                                </h6> 
+                        </a>
+                    </div>
+                </td>
+                <td>
+                    <div class="cart-price">
+                        @if ($getDiscountAttributePrice['discount']>0)
+                            <div class="price-template">
+                                <div class="item-new-price">
+                                    RS.{{ $getDiscountAttributePrice['final_price'] }}
+                                </div>                                         
+                                <div class="item-old-price" style="margin-left: -40px">
+                                    RS.{{ $getDiscountAttributePrice['product_price'] }}
+                                </div>
+                            </div>
+                        @else
+                            <div class="price-template">
+                                <div class="item-new-price">
+                                    RS.{{ $getDiscountAttributePrice['final_price'] }}
+                                </div>                                         
+                            </div>
+                        @endif
+                    </div>
+                </td>
+                <td>
+                    <div class="cart-quantity">
+                        <div class="quantity">
+                            <input type="text" class="quantity-text-field" value="{{ $item['quantity'] }}">
+                            <a class="plus-a updateCartItem" 
+                            data-cartid="{{ $item['id'] }}" data-qty="{{ $item['quantity'] }}" data-max="1000">&#43;</a>
+                            <a class="minus-a updateCartItem"
+                            data-cartid="{{ $item['id'] }}" data-qty="{{ $item['quantity'] }}" data-min="1">&#45;</a>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="cart-price">
+                        RS.{{ $getDiscountAttributePrice['final_price'] * $item['quantity'] }} 
+                    </div>
+                </td>
+                <td>
+                    <div class="action-wrapper">
+                        <button class="button button-outline-secondary fas fa-sync"></button>
+                        <button class="button button-outline-secondary fas fa-trash deleteCartItem"
+                        data-cartid="{{ $item['id'] }}"></button>
+                    </div>
+                </td>
+            </tr>
+            @php
+                $total_price = $total_price +( $getDiscountAttributePrice['final_price'] * $item['quantity'])
+            @endphp
+            @endforeach
+        
+        </tbody>
+    </table>
+</div>
+<!-- Products-List-Wrapper /- -->
+<!-- Coupon -->
+<div class="coupon-continue-checkout u-s-m-b-60">
+    {{-- <div class="coupon-area">
+        <h6>Enter your coupon code if you have one.</h6>
+        <div class="coupon-field">
+            <label class="sr-only" for="coupon-code">Apply Coupon</label>
+            <input id="coupon-code" type="text" class="text-field" placeholder="Coupon Code">
+            <button type="submit" class="button">Apply Coupon</button>
+        </div>
+    </div> --}}
+    <div class="button-area">
+        <a href="{{ url('/') }}" class="continue">Continue Shopping</a>
+        <a href="{{ route('checkout') }}" class="checkout">Proceed to Checkout</a>
+    </div>
+</div>
+    <!-- Coupon /- -->
+<!-- Billing -->
+<div class="calculation u-s-m-b-60">
+    <div class="table-wrapper-2">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Cart Totals</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <h3 class="calc-h3 u-s-m-b-0">Subtotal</h3>
+                    </td>
+                    <td>
+                        <span class="calc-text">RS.{{ $total_price }}</span>
+                    </td>
+                </tr>
+                {{-- <tr>
+                    <td>
+                        <h3 class="calc-h3 u-s-m-b-0">Cupon Discount</h3>
+                    </td>
+                    <td>
+                        <span class="calc-text">RS.00</span>
+                    </td>
+                </tr> --}}
+                <tr>
+                    <td>
+                        <h3 class="calc-h3 u-s-m-b-0">Total</h3>
+                    </td>
+                    <td>
+                        <span class="calc-text">RS.{{ $total_price }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Billing /- -->
+@else
+    <h4 class="text-center text-danger">This cart is empty</h4>
+@endif
